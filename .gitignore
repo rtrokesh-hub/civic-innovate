@@ -1,0 +1,30 @@
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Build outputs
+**/target/
+**/dist/
+**/node_modules/
+*.log
+
+# Backups & temp files
+**/src_backup/
+*.tmp
+*.bak
+
+# IDE & OS metadata
+.idea/
+.vscode/
+*.class
+.DS_Store
+Thumbs.db
+
+# User uploads
+/uploads/*
+!/uploads/.gitkeep
+
+# Local application configuration
+**/application-local.yml
+**/application-local.properties

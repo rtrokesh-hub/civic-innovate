@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: civic-innovate
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  datasource:
+    url: jdbc:postgresql://localhost:5433/civic_innovate_db
+    username: postgres
+    password: ""
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 10
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 30MB
+
+app:
+  jwt:
+    secret: ${CIVIC_JWT_SECRET}
+    expiration-ms: 86400000
+  storage:
+    upload-dir: ${APP_UPLOAD_DIR:uploads}
+  gemini:
+    api-key: ${GEMINI_API_KEY:}
+
