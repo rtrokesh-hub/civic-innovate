@@ -12,6 +12,7 @@ import com.civic.innovate.repository.UserRepository;
 import com.civic.innovate.security.JwtTokenProvider;
 import jakarta.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,8 @@ public class AuthService {
     private final CollegeRepository collegeRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
+    @Value("${app.seed-demo-data:false}")
+    private boolean seedDemoData;
 
     public AuthService(UserRepository userRepository,
                        CollegeRepository collegeRepository,
@@ -39,6 +42,9 @@ public class AuthService {
 
     @PostConstruct
     public void seedInitialData() {
+        if (!seedDemoData) {
+            return;
+        }
         if (collegeRepository.count() == 0) {
             College c1 = new College("Bengaluru Institute of Technology", "BIT-BLR", "Bengaluru", "Karnataka", "admin@bit.edu");
             College c2 = new College("National Institute of Engineering", "NIE-MYS", "Mysuru", "Karnataka", "info@nie.ac.in");
@@ -83,6 +89,14 @@ public class AuthService {
 
     @Transactional
     public AuthResponse register(RegisterRequest req) {
+
+    if (req.getRole() != Role.ROLE_CITIZEN
+            && req.getRole() != Role.ROLE_STUDENT) {
+        throw new IllegalArgumentException(
+                "Only Citizen and Student accounts can be self-registered"
+        );
+    }
+
         if (userRepository.existsByEmail(req.getEmail())) {
             throw new IllegalArgumentException("Email already in use: " + req.getEmail());
         }

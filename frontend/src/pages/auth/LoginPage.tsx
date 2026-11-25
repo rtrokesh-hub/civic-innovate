@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/client';
-import { Building2, LogIn, AlertCircle, ArrowRight, ShieldCheck, UserCheck } from 'lucide-react';
-
+import { Building2, LogIn, AlertCircle } from 'lucide-react';
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -45,11 +44,7 @@ export const LoginPage: React.FC = () => {
     }
   };
 
-  const fillDemoCredentials = (demoEmail: string, demoPass: string) => {
-    setEmail(demoEmail);
-    setPassword(demoPass);
-    setError('');
-  };
+  
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -120,46 +115,7 @@ export const LoginPage: React.FC = () => {
             </button>
           </form>
 
-          {/* Quick Role Fillers */}
-          <div className="pt-4 border-t border-slate-100 space-y-2">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block text-center">
-              Quick Test Credentials:
-            </span>
-            <div className="grid grid-cols-2 gap-2 text-[11px]">
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials('citizen@civic.org', 'Citizen123!')}
-                className="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-medium text-left transition"
-              >
-                🙋‍♂️ <strong>Citizen</strong>
-                <span className="block text-[10px] text-slate-400">citizen@civic.org</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials('admin@civic.gov', 'GovAdmin123!')}
-                className="p-2 rounded-lg bg-amber-50/60 hover:bg-amber-100/60 border border-amber-200 text-amber-900 font-medium text-left transition"
-              >
-                🏛️ <strong>Gov Official</strong>
-                <span className="block text-[10px] text-amber-600">admin@civic.gov</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials('student@bit.edu', 'Student123!')}
-                className="p-2 rounded-lg bg-indigo-50/60 hover:bg-indigo-100/60 border border-indigo-200 text-indigo-900 font-medium text-left transition"
-              >
-                🎓 <strong>Student Innovator</strong>
-                <span className="block text-[10px] text-indigo-600">student@bit.edu</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials('admin@bit.edu', 'CollegeAdmin123!')}
-                className="p-2 rounded-lg bg-purple-50/60 hover:bg-purple-100/60 border border-purple-200 text-purple-900 font-medium text-left transition"
-              >
-                🏫 <strong>College Admin</strong>
-                <span className="block text-[10px] text-purple-600">admin@bit.edu</span>
-              </button>
-            </div>
-          </div>
+         
 
           <div className="text-center pt-2 text-xs text-slate-500">
             Don't have an account?{' '}
