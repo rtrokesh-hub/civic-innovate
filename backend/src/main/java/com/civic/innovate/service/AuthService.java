@@ -29,6 +29,14 @@ public class AuthService {
     private final JwtTokenProvider tokenProvider;
     @Value("${app.seed-demo-data:false}")
     private boolean seedDemoData;
+    @Value("${OFFICIAL_BOOTSTRAP_EMAIL:}")
+      private String bootstrapOfficialEmail;
+
+@Value("${OFFICIAL_BOOTSTRAP_PASSWORD:}")
+private String bootstrapOfficialPassword;
+
+@Value("${OFFICIAL_BOOTSTRAP_NAME:}")
+private String bootstrapOfficialName;
 
     public AuthService(UserRepository userRepository,
                        CollegeRepository collegeRepository,
@@ -143,4 +151,40 @@ public class AuthService {
     public List<College> getAllColleges() {
         return collegeRepository.findAll();
     }
+   
+@Transactional
+public void bootstrapOfficialAccount() {
+
+    boolean emailProvided = bootstrapOfficialEmail != null
+            && !bootstrapOfficialEmail.isBlank();
+
+    boolean passwordProvided = bootstrapOfficialPassword != null
+            && !bootstrapOfficialPassword.isBlank();
+
+    boolean nameProvided = bootstrapOfficialName != null
+            && !bootstrapOfficialName.isBlank();
+
+    if (!emailProvided && !passwordProvided && !nameProvided) {
+        return;
+    }
+
+    if (!emailProvided || !passwordProvided || !nameProvided) {
+        throw new IllegalStateException(
+                "All official bootstrap environment variables must be provided."
+        );
+    }
+
+    if (userRepository.existsByEmail(bootstrapOfficialEmail)) {
+        return;
+    }
+
+    User official = new User(
+            bootstrapOfficialEmail,
+            passwordEncoder.encode(bootstrapOfficialPassword),
+            bootstrapOfficialName,
+            Role.ROLE_GOV_OFFICIAL
+    );
+
+    userRepository.save(official);
+}
 }
